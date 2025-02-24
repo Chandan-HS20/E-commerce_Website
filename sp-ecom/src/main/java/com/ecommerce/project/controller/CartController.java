@@ -43,6 +43,7 @@ public class CartController {
         String emailId = authUtil.loggedInEmail();
         Cart cart = cartRepository.findCartByEmail(emailId);
         Long cartId = cart.getCartId();
+//        logger.debug("Fetching cart with emailId: {} and cartId: {}", emailId, cartId);
         CartDTO cartDTO = cartService.getCart(emailId, cartId);
         return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
     }

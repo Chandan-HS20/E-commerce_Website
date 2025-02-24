@@ -10,10 +10,13 @@ import com.ecommerce.project.payload.ProductDTO;
 import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
+import com.ecommerce.project.security.jwt.AuthEntryPointJwt;
 import com.ecommerce.project.service.CartService;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,8 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
     @Override
     public CartDTO addProductToCart(Long productId, Integer quantity) {
@@ -120,6 +125,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO getCart(String emailId, Long cartId) {
+        logger.debug("Fetching cart with emailId: {} and cartId: {}", emailId, cartId);
+
         Cart cart = cartRepository.findCartByEmailAndCartId(emailId, cartId);
         if (cart == null){
             throw new ResourceNotFoundException("Cart", "cartId", cartId);
